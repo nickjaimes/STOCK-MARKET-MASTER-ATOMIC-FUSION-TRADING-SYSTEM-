@@ -1,0 +1,60 @@
+# docker-compose.trading.yml
+version: '3.8'
+
+services:
+  fusion-orchestrator:
+    image: stock-master/fusion-orchestrator:3.0.0
+    environment:
+      - TRADING_STRATEGY=quantum_trend_fusion
+      - RISK_TOLERANCE=aggressive
+    deploy:
+      resources:
+        limits:
+          cpus: '8'
+          memory: 32G
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 2
+              capabilities: [gpu]
+
+  fire-predictor:
+    image: stock-master/fire-predictor:3.0.0
+    environment:
+      - AI_MODELS=quantum_lstm,transformer_forecast,regime_detector
+    deploy:
+      replicas: 3
+
+  water-dataflow:
+    image: stock-master/water-dataflow:3.0.0
+    environment:
+      - DATA_SOURCES=market_data,news_feeds,social_media
+      - PROCESSING_SPEED=realtime
+    ports:
+      - "8080:8080"
+
+  earth-riskmanager:
+    image: stock-master/earth-risk:3.0.0
+    environment:
+      - RISK_MODELS=var_monte_carlo,expected_shortfall,stress_testing
+    volumes:
+      - risk_data:/var/lib/risk
+
+  wind-sentiment:
+    image: stock-master/wind-sentiment:3.0.0
+    environment:
+      - SENTIMENT_SOURCES=news,social,analyst,economic
+    deploy:
+      replicas: 2
+
+  lightning-execution:
+    image: stock-master/lightning-execution:3.0.0
+    environment:
+      - EXECUTION_VENUES=primary_exchange,dark_pools,electronic_platforms
+      - LATENCY_TARGET=<100 microseconds
+    privileged: true
+    network_mode: "host"
+
+volumes:
+  risk_data:
+    driver: local
