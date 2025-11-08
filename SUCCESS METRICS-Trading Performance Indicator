@@ -1,0 +1,29 @@
+class FusionTradingMetrics:
+    """Comprehensive metrics for atomic fusion trading success"""
+    
+    KEY_PERFORMANCE_INDICATORS = {
+        'predictive_accuracy': "Fire element prediction success rate",
+        'execution_efficiency': "Lightning element execution quality", 
+        'risk_adjusted_returns': "Earth element risk management effectiveness",
+        'sentiment_correlation': "Wind element sentiment alignment",
+        'liquidity_utilization': "Water element liquidity optimization",
+        'fusion_synergy': "Overall system synergy score"
+    }
+    
+    @classmethod
+    async def evaluate_trading_success(cls, trading_system, period):
+        """
+        Comprehensive evaluation of trading system performance
+        """
+        evaluation = {}
+        
+        for kpi, description in cls.KEY_PERFORMANCE_INDICATORS.items():
+            kpi_value = await getattr(trading_system, f'calculate_{kpi}')(period)
+            evaluation[kpi] = {
+                'value': kpi_value,
+                'target': cls.KPI_TARGETS[kpi],
+                'achieved': kpi_value >= cls.KPI_TARGETS[kpi],
+                'description': description
+            }
+        
+        return evaluation
