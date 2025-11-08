@@ -1,0 +1,12 @@
+# Clone and setup development environment
+git clone https://github.com/nicolas-santiago/stock-market-master.git
+cd stock-market-master
+
+# Install development dependencies
+pip install -e ".[dev,test,analysis,trading]"
+
+# Run trading system tests
+pytest tests/trading/ -v
+
+# Backtest strategies
+python scripts/backtest_fusion.py --strategy quantum_trend --period 2020-2024
