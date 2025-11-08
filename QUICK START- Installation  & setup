@@ -1,0 +1,7 @@
+# Install Stock Market Master
+pip install stock-market-master
+
+# Or clone and install from source
+git clone https://github.com/nicolas-santiago/stock-market-master.git
+cd stock-market-master
+pip install -e ".[trading,analysis,execution]"
